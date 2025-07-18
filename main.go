@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"frontendmasters.com/reelingit/handlers"
 	"frontendmasters.com/reelingit/logger"
 )
 
@@ -21,7 +22,14 @@ func main() {
 
 	logInstance := initializeLogger()
 
+	movieHandler := handlers.MovieHandler{}
+
+	http.HandleFunc("/api/movies/top", movieHandler.GetTopMovies)
+	http.HandleFunc("/api/movies/random", movieHandler.GetRandomMovies)
+
+	// handler for static files (html, css, js, images)
 	http.Handle("/", http.FileServer(http.Dir("public")))
+
 	fmt.Println("Server is running on port 8080")
 
 	const addr = ":8080"
