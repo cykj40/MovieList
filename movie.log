@@ -1,0 +1,7 @@
+ERROR: 2025/07/19 08:50:23 logger.go:35: Hello: test error
+ERROR: 2025/07/19 08:50:51 logger.go:35: Hello: <nil>
+ERROR: 2025/07/19 08:52:05 logger.go:35: Hello: <nil>
+ERROR: 2025/07/19 08:52:33 logger.go:35: Hello: <nil>
+ERROR: 2025/07/19 08:52:39 logger.go:35: Hello: <nil>
+ERROR: 2025/07/19 08:53:01 logger.go:35: Hello: <nil>
+ERROR: 2025/07/19 09:03:37 logger.go:35: Hello: <nil>

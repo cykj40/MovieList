@@ -1,9 +1,8 @@
 package models
 
 type Actor struct {
-	ID        int
-	FirstName string
-	LastName  string
-	ImageUrl  *string // nullable
-
+	ID        int     `json:"id"`
+	FirstName string  `json:"first_name"`
+	LastName  string  `json:"last_name"`
+	ImageUrl  *string `json:"image_url,omitempty"`
 }
