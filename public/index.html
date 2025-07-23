@@ -8,12 +8,14 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="manifest" href="app.webmanifest">
     <link rel="icon" href="images/icon.png">
+
     <script src="app.js" type="module" defer></script>
 </head>
 
 <body>
     <header>
-        <h1><img src="images/logo.png" height="35" alt="ReelingIt"></h1>
+        <h1><a href="#" onclick="window.location.hash = ''; window.app.navigate(); return false;"><img
+                    src="images/logo.png" height="35" alt="ReelingIt"></a></h1>
         <nav>
             <ul>
                 <li><a class="navLink" href="/">Movies</a></li>
@@ -29,23 +31,40 @@
         </div>
     </header>
     <main>
-        <home-page></home-page>
+        <!-- Content will be dynamically loaded here -->
     </main>
 
     <!---- Templates ---->
     <template id="template-home">
         <section class="vertical-scroll" id="top-10">
             <h2>This Week's Top Movies</h2>
-            <ul>
-
-            </ul>
+            <ul></ul>
         </section>
         <section class="vertical-scroll" id="random">
             <h2>Something to watch today</h2>
-            <ul>
-
-            </ul>
+            <ul></ul>
         </section>
+
+    </template>
+    <template id="template-movie-details">
+        <article id="movie">
+            <h2><animated-loading elements="2"></animated-loading></h2>
+            <h3></h3>
+            <header>
+                <img src="" alt="Poster">
+                <youtube-embed id="trailer" data-url="">YouTube</youtube-embed>
+                <section id="actions">
+                    <dl id="metadata">
+
+                    </dl>
+                    <button>Add to Favorites</button>
+                    <button>Add to Watchlist</button>
+                </section>
+            </header>
+            <ul id="genres"></ul>
+            <p id="overview"></p>
+            <ul id="cast"></ul>
+        </article>
     </template>
 
     <footer>

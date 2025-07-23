@@ -174,26 +174,36 @@ movie-item {
     gap: 20px;
 }
 
-/* Waving Effect Animation */
+/* Loading State - matches course example */
+animated-loading {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    padding: 2rem;
+}
+
 .loading-wave {
-    background: linear-gradient(90deg,
-            #555 0%,
-            #999 50%,
-            #555 100%);
+    width: 150px;
+    height: 225px;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.05), 
+        transparent);
+    background-color: var(--primaryColor);
     background-size: 200% 100%;
-    border-radius: 5px;
-    margin-bottom: 0.5rem;
+    border-radius: 8px;
     animation: loading-wave 1.5s infinite ease-in-out;
+    margin-bottom: 1rem;
 }
 
 
 @keyframes loading-wave {
     0% {
-        background-position: 0% 50%;
+        background-position: -200% 0;
     }
-
     100% {
-        background-position: 200% 50%;
+        background-position: 200% 0;
     }
 }
 

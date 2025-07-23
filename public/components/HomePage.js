@@ -5,10 +5,21 @@ export class HomePage extends HTMLElement {
 
 
     async render() {
-        const topMovies = await API.getTopMovies();
-        renderMoviesinList(topMovies, this.querySelector("#top-10 ul"));
+        // Show loading animation briefly like in the course example
+        const loadingElement = document.querySelector("animated-loading");
 
-        const randomMovies = await API.getRandomMovies();
+        const [topMovies, randomMovies] = await Promise.all([
+            API.getTopMovies(),
+            API.getRandomMovies(),
+            new Promise(resolve => setTimeout(resolve, 1000)) // 1 second to see the animation
+        ]);
+
+        // Hide loading animation cleanly
+        if (loadingElement) {
+            loadingElement.style.display = "none";
+        }
+
+        renderMoviesinList(topMovies, this.querySelector("#top-10 ul"));
         renderMoviesinList(randomMovies, this.querySelector("#random ul"));
 
         function renderMoviesinList(movies, ul) {
