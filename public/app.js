@@ -3,65 +3,45 @@ import { API } from "./services/API.js";
 import './components/AnimatedLoading.js';
 import { MovieDetailsPage } from "./components/MovieDetailsPage.js";
 import { YouTubeEmbed } from "./components/YouTubeEmbed.js";
-
-// Make sure HomePage is registered
-console.log("HomePage class:", HomePage);
-
-console.log("app.js loaded - imports complete");
+import { Router } from "./services/Router.js";
 
 // Define window.app first
 window.app = {
-    navigate: () => {
-        console.log("Navigating to:", window.location.hash);
-        const main = document.querySelector("main");
-        const hash = window.location.hash;
-
-        // Clear main content
-        main.innerHTML = '';
-
-        if (hash.startsWith('#movie/')) {
-            // Show movie details
-            const movieId = hash.replace('#movie/', '');
-            console.log("Loading movie details page for movie ID:", movieId);
-            const movieDetailsPage = new MovieDetailsPage();
-            main.appendChild(movieDetailsPage);
-        } else {
-            // Show home page (default)
-            console.log("Loading home page");
-
-            // Add loading animation
-            const loadingElement = document.createElement('animated-loading');
-            loadingElement.setAttribute('data-elements', '10');
-            loadingElement.setAttribute('data-width', '150px');
-            loadingElement.setAttribute('data-height', '225px');
-            main.appendChild(loadingElement);
-
-            // Add home page component
-            const homePageElement = document.createElement('home-page');
-            main.appendChild(homePageElement);
-
-            console.log("Home page components added");
-        }
+    Router,
+    API,
+    showError: (message = "There was an error.", goToHome = false) => {
+        document.getElementById("alert-modal").showModal();
+        document.querySelector("#alert-modal p").textContent = message;
+        if (goToHome) app.Router.go("/");
     },
-
+    closeError: () => {
+        document.getElementById("alert-modal").close()
+    },
     search: (event) => {
         event.preventDefault();
         const q = document.querySelector("input[type=search]").value;
-        console.log("Search for:", q);
-        // TODO: Implement search functionality
+        app.Router.go("/movies?q=" + q);
     },
-
-    api: API
+    searchOrderChange: (order) => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const q = urlParams.get("q");
+        const genre = urlParams.get("genre") ?? "";
+        app.Router.go(`/movies?q=${q}&order=${order}&genre=${genre}`);
+    },
+    searchFilterChange: (genre) => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const q = urlParams.get("q");
+        const order = urlParams.get("order") ?? "";
+        app.Router.go(`/movies?q=${q}&order=${order}&genre=${genre}`);
+    },
+    saveToCollection: (movieId, collectionType) => {
+        // This would normally save to API
+        console.log(`Saving movie ${movieId} to ${collectionType}`);
+        // For now, just show a confirmation
+        app.showError(`Movie added to ${collectionType}!`, false);
+    }
 };
 
-// Initialize after DOM is loaded
-window.addEventListener("DOMContentLoaded", event => {
-    console.log("DOM loaded, initializing app");
-    window.app.navigate(); // Initialize routing
-});
-
-// Add navigation when hash changes
-window.addEventListener("hashchange", () => {
-    console.log("Hash changed");
-    window.app.navigate();
+window.addEventListener("DOMContentLoaded", () => {
+    app.Router.init();
 });

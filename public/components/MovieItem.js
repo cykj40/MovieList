@@ -9,19 +9,19 @@ export class MovieItemComponent extends HTMLElement {
         const posterUrl = this.movie.poster_url || '/images/generic_actor.jpg';
 
         this.innerHTML = `
-            <a href="#movie/${this.movie.id}">
-            <article>
+            <a href="/movies/${this.movie.id}">
                 <img src="${posterUrl}" alt="${this.movie.title} poster" onerror="this.src='/images/generic_actor.jpg'">
                 <p>${this.movie.title} (${this.movie.release_year})</p>
-            </article>
             </a>
         `;
 
-        // Add click handler for navigation
+        // Add click handler for router navigation
         this.querySelector('a').addEventListener('click', (e) => {
             e.preventDefault();
-            window.location.hash = `movie/${this.movie.id}`;
-            window.app.navigate();
+            console.log("Movie clicked, navigating to:", `/movies/${this.movie.id}`);
+            console.log("app.Router exists:", !!app.Router);
+            console.log("app.Router.go exists:", typeof app.Router.go);
+            app.Router.go(`/movies/${this.movie.id}`);
         });
     }
 
