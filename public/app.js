@@ -9,7 +9,7 @@ import { Router } from "./services/Router.js";
 window.app = {
     Router,
     API,
-    showError: (message = "There was an error.", goToHome = false) => {
+    showError: (message = "There was an error.", goToHome = true) => {
         document.getElementById("alert-modal").showModal();
         document.querySelector("#alert-modal p").textContent = message;
         if (goToHome) app.Router.go("/");

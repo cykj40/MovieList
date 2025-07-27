@@ -64,6 +64,14 @@ func main() {
 	http.HandleFunc("/api/movies/", movieHandler.GetMovie)
 	http.HandleFunc("/api/genres", movieHandler.GetGenres)
 
+	cathAllClientRoutesHandler := func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./public/index.html")
+	}
+
+	http.HandleFunc("/movie/", cathAllClientRoutesHandler)
+	http.HandleFunc("/movies/", cathAllClientRoutesHandler)
+	http.HandleFunc("/account/", cathAllClientRoutesHandler)
+
 	// handler for static files (html, css, js, images)
 	http.Handle("/", http.FileServer(http.Dir("public")))
 

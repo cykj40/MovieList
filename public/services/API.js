@@ -20,11 +20,16 @@ export const API = {
         try {
             const queryString = args ? new URLSearchParams(args).toString() : "";
             const response = await fetch(API.baseUrl + ServiceName + "?" + queryString);
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
             const result = await response.json();
             return result;
         } catch (error) {
             console.error(error);
-            return null;
+            throw error;
         }
     }
 

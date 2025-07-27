@@ -72,9 +72,25 @@ export const Router = {
         console.log("Main element found:", !!mainElement);
         console.log("Main element current content:", mainElement ? mainElement.innerHTML.substring(0, 100) + "..." : "NO MAIN ELEMENT");
 
+        // Use view transition API to animate the page change
         if (mainElement) {
-            mainElement.innerHTML = "";
-            mainElement.appendChild(pageElement);
+            const oldPage = document.querySelector("main").firstElementChild
+            if (oldPage) oldPage.style.viewTransitionName = "old";
+            pageElement.style.viewTransitionName = "new";
+
+            function updatePage() {
+                mainElement.innerHTML = "";
+                mainElement.appendChild(pageElement);
+
+            }
+
+            if (!document.startViewTransition) {
+                updatePage();
+            } else {
+                document.startViewTransition(() => {
+                    updatePage();
+                })
+            }
             console.log("Main element updated, new content:", mainElement.innerHTML.substring(0, 100) + "...");
         } else {
             console.error("Could not find main element!");

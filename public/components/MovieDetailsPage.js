@@ -7,7 +7,8 @@ export class MovieDetailsPage extends HTMLElement {
     async render() {
         try {
             this.movie = await API.getMovieById(this.id)
-        } catch {
+        } catch (error) {
+            app.showError("Movie not found. Please check the ID and try again.");
             return;
         }
         const template = document.getElementById("template-movie-details");
