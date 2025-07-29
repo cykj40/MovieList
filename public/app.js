@@ -41,6 +41,7 @@ window.app = {
         // For now, just show a confirmation
         app.showError(`Movie added to ${collectionType}!`, false);
     }
+
 };
 
 window.addEventListener("DOMContentLoaded", () => {

@@ -41,6 +41,25 @@ export default class MoviesPage extends HTMLElement {
 
     }
 
+    async loadGenres() {
+        try {
+            console.log("Loading genres...");
+            const genres = await API.getGenres();
+            console.log("Genres loaded:", genres);
+            const select = this.querySelector("select#filter");
+            select.innerHTML = `<option>Filter by Genre</option>`;
+            genres.forEach(genre => {
+                var option = document.createElement("option");
+                option.value = genre.id;
+                option.textContent = genre.name;
+                select.appendChild(option);
+            });
+            console.log("Genres populated in dropdown");
+        } catch (error) {
+            console.error("Error loading genres:", error);
+        }
+    }
+
 
     connectedCallback() {
         const template = document.getElementById("template-movies");
@@ -59,6 +78,8 @@ export default class MoviesPage extends HTMLElement {
         } else {
             app.showError();
         }
+
+        this.loadGenres();
     }
 }
 customElements.define("movies-page", MoviesPage);

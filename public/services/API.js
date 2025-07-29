@@ -10,6 +10,9 @@ export const API = {
         const result = await response.json();
         return result;
     },
+    getGenres: async () => {
+        return await API.fetch(`genres/`);
+    },
     getMovieById: async (id) => {
         return await API.fetch(`movies/${id}`);
     },
