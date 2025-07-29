@@ -11,7 +11,7 @@ export const API = {
         return result;
     },
     getGenres: async () => {
-        return await API.fetch(`genres/`);
+        return await API.fetch(`genres`);
     },
     getMovieById: async (id) => {
         return await API.fetch(`movies/${id}`);
