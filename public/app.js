@@ -2,9 +2,7 @@ import { HomePage } from "./components/HomePage.js";
 import { API } from "./services/API.js";
 import './components/AnimatedLoading.js';
 import { MovieDetailsPage } from "./components/MovieDetailsPage.js";
-console.log("About to import MoviesPage");
 import MoviesPage from "./components/MoviesPage.js";
-console.log("MoviesPage imported successfully:", MoviesPage);
 import { YouTubeEmbed } from "./components/YouTubeEmbed.js";
 import { Router } from "./services/Router.js";
 

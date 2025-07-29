@@ -2,11 +2,6 @@ import { HomePage } from "../components/HomePage.js";
 import { MovieDetailsPage } from "../components/MovieDetailsPage.js";
 import MoviesPage from "../components/MoviesPage.js";
 
-console.log("Routes.js - Imported components:");
-console.log("HomePage:", HomePage);
-console.log("MovieDetailsPage:", MovieDetailsPage);
-console.log("MoviesPage:", MoviesPage);
-
 // Account pages following the same pattern as MovieDetailsPage
 class RegisterPage extends HTMLElement {
     formData = null;
@@ -34,7 +29,6 @@ class RegisterPage extends HTMLElement {
         this.querySelector("#register-form").addEventListener("submit", (event) => {
             event.preventDefault();
             // Handle registration logic here
-            console.log("Registration form submitted");
         });
     }
 
@@ -65,7 +59,6 @@ class LoginPage extends HTMLElement {
         this.querySelector("#login-form").addEventListener("submit", (event) => {
             event.preventDefault();
             // Handle login logic here
-            console.log("Login form submitted");
         });
     }
 
@@ -200,12 +193,6 @@ const routes = [
         component: WatchlistPage
     },
 ]
-
-console.log("Routes.js - Routes array created:");
-console.log("Routes array:", routes);
-routes.forEach((route, index) => {
-    console.log(`Route ${index}: path=${route.path}, component=${route.component?.name || route.component}`);
-});
 
 export { routes };
 
