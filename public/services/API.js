@@ -14,11 +14,21 @@ export const API = {
         return await API.fetch(`movies/${id}`);
     },
     searchMovies: async (q, order, genre) => {
-        return await API.fetch(`movies/search/`, { q, order, genre });
+        return await API.fetch(`movies/search`, { q, order, genre });
     },
     fetch: async (ServiceName, args) => {
         try {
-            const queryString = args ? new URLSearchParams(args).toString() : "";
+            // Filter out undefined, null, and empty string values
+            const cleanArgs = {};
+            if (args) {
+                Object.keys(args).forEach(key => {
+                    const value = args[key];
+                    if (value !== undefined && value !== null && value !== "") {
+                        cleanArgs[key] = value;
+                    }
+                });
+            }
+            const queryString = Object.keys(cleanArgs).length > 0 ? new URLSearchParams(cleanArgs).toString() : "";
             const response = await fetch(API.baseUrl + ServiceName + "?" + queryString);
 
             if (!response.ok) {

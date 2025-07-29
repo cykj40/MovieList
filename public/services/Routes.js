@@ -1,6 +1,11 @@
 import { HomePage } from "../components/HomePage.js";
 import { MovieDetailsPage } from "../components/MovieDetailsPage.js";
-import { MoviePage } from "../components/MoviePage.js";
+import MoviesPage from "../components/MoviesPage.js";
+
+console.log("Routes.js - Imported components:");
+console.log("HomePage:", HomePage);
+console.log("MovieDetailsPage:", MovieDetailsPage);
+console.log("MoviesPage:", MoviesPage);
 
 // Account pages following the same pattern as MovieDetailsPage
 class RegisterPage extends HTMLElement {
@@ -168,7 +173,7 @@ const routes = [
     },
     {
         path: "/movies",
-        component: MoviePage
+        component: MoviesPage
     },
     {
         path: /\/movies\/(\d+)/,
@@ -195,6 +200,12 @@ const routes = [
         component: WatchlistPage
     },
 ]
+
+console.log("Routes.js - Routes array created:");
+console.log("Routes array:", routes);
+routes.forEach((route, index) => {
+    console.log(`Route ${index}: path=${route.path}, component=${route.component?.name || route.component}`);
+});
 
 export { routes };
 

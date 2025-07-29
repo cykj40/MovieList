@@ -2,6 +2,13 @@ import { routes } from "./Routes.js";
 
 export const Router = {
     init: () => {
+        console.log("Router.init called");
+        console.log("Available routes:", routes);
+        console.log("Number of routes:", routes.length);
+        routes.forEach((route, index) => {
+            console.log(`Route ${index}:`, route.path, route.component?.name || route.component);
+        });
+
         window.addEventListener("popstate", () => {
             Router.go(location.pathname, false);
         });
@@ -35,8 +42,14 @@ export const Router = {
             if (typeof r.path === "string" && r.path === routePath) {
                 // String path
                 console.log("String path match found");
+                console.log("About to create component:", r.component.name);
+                console.log("Component constructor:", r.component);
+                console.log("Is this MoviesPage?", r.component.name === "MoviesPage");
                 try {
                     pageElement = new r.component();
+                    console.log("Component created successfully:", pageElement);
+                    console.log("Component tagName:", pageElement.tagName);
+                    console.log("Component constructor:", pageElement.constructor.name);
                     needsLogin = r.loggedIn === true
                 } catch (error) {
                     console.error("Error creating component:", error);
