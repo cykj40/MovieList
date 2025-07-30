@@ -90,18 +90,34 @@
             </ul>
         </section>
     </template>
+    <template id="template-register">
+        <section>
+            <h2>Register a new account</h2>
+            <form onsubmit="app.register(event)">
+                <label for="register-name">Name</label>
+                <input id="register-name" type="text" required autocomplete="name">
+                <label for="register-email">Email</label>
+                <input id="register-email" required type="email" autocomplete="email">
+                <label for="register-password">Password</label>
+                <input id="register-password" required type="password" autocomplete="new-password">
+                <label for="register-password-confirmation">Repeat your Password</label>
+                <input id="register-password-confirmation" required type="password" autocomplete="new-password">
+                <button>Register</button>
+                <p>Already have an account? <a href="/account/login">Login</a></p>
+            </form>
+        </section>
 
-    <footer>
-        <p>(C) ReelingIt - FrontendMasters.com </p>
-    </footer>
+        <footer>
+            <p>(C) ReelingIt - FrontendMasters.com </p>
+        </footer>
 
-    <!-- Alert Modal -->
-    <dialog id="alert-modal">
-        <div>
-            <p>Message will appear here</p>
-            <button onclick="app.closeError()">OK</button>
-        </div>
-    </dialog>
+        <!-- Alert Modal -->
+        <dialog id="alert-modal">
+            <div>
+                <p>Message will appear here</p>
+                <button onclick="app.closeError()">OK</button>
+            </div>
+        </dialog>
 
 </body>
 

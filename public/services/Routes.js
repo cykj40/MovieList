@@ -1,41 +1,7 @@
 import { HomePage } from "../components/HomePage.js";
 import { MovieDetailsPage } from "../components/MovieDetailsPage.js";
 import MoviesPage from "../components/MoviesPage.js";
-
-// Account pages following the same pattern as MovieDetailsPage
-class RegisterPage extends HTMLElement {
-    formData = null;
-
-    async render() {
-        this.innerHTML = `
-            <h1>Create Account</h1>
-            <form id="register-form">
-                <div>
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" required>
-                </div>
-                <div>
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" required>
-                </div>
-                <div>
-                    <label for="confirm-password">Confirm Password:</label>
-                    <input type="password" id="confirm-password" required>
-                </div>
-                <button type="submit">Register</button>
-            </form>
-        `;
-
-        this.querySelector("#register-form").addEventListener("submit", (event) => {
-            event.preventDefault();
-            // Handle registration logic here
-        });
-    }
-
-    connectedCallback() {
-        this.render();
-    }
-}
+import { RegisterPage } from "../components/RegisterPage.js";
 
 class LoginPage extends HTMLElement {
     formData = null;

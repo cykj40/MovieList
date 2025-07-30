@@ -4,6 +4,7 @@ import './components/AnimatedLoading.js';
 import { MovieDetailsPage } from "./components/MovieDetailsPage.js";
 import MoviesPage from "./components/MoviesPage.js";
 import { YouTubeEmbed } from "./components/YouTubeEmbed.js";
+import { RegisterPage } from "./components/RegisterPage.js";
 import { Router } from "./services/Router.js";
 
 // Define window.app first
