@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"frontendmasters.com/reelingit/data"
@@ -95,6 +96,8 @@ func (h *AccountHandler) Register(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *AccountHandler) Authenticate(w http.ResponseWriter, r *http.Request) {
+	h.logger.Info("Authenticate handler called - method: " + r.Method + ", URL: " + r.URL.String())
+
 	// Parse request body
 	var req AuthRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -102,22 +105,39 @@ func (h *AccountHandler) Authenticate(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
 		return
 	}
+	h.logger.Info("Successfully decoded request - email: " + req.Email)
 
 	// Authenticate the user
+	h.logger.Info("About to call storage.Authenticate")
 	success, err := h.storage.Authenticate(req.Email, req.Password)
+	h.logger.Info("Storage.Authenticate completed - success: " + fmt.Sprintf("%t", success))
+	if err != nil {
+		h.logger.Error("Authentication error: "+err.Error(), err)
+	} else {
+		h.logger.Info("No error returned from authentication")
+	}
+	h.logger.Info("About to call handleStorageError with err: " + fmt.Sprintf("%v", err))
 	if h.handleStorageError(w, err, "Failed to authenticate user") {
+		h.logger.Info("handleStorageError returned true, exiting")
 		return
 	}
+
+	h.logger.Info("About to create JWT token")
+	jwtToken := token.CreateJWT(models.User{Email: req.Email}, *h.logger)
+	h.logger.Info("JWT token created successfully")
 
 	// Return success response
 	response := AuthResponse{
 		Success: success,
-		Message: "User registered successfully",
-		JWT:     token.CreateJWT(models.User{Email: req.Email}, *h.logger),
+		Message: "User authenticated successfully",
+		JWT:     jwtToken,
 	}
 
+	h.logger.Info("About to write JSON response")
 	if err := h.writeJSONResponse(w, response); err == nil {
 		h.logger.Info("Successfully authenticated user with email: " + req.Email)
+	} else {
+		h.logger.Error("Failed to write JSON response", err)
 	}
 }
 

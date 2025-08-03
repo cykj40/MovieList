@@ -83,7 +83,7 @@ func (r *AccountRepository) Authenticate(email string, password string) (bool, e
 	// Fetch user by email
 	var user models.User
 	query := `
-		SELECT id, name, email, password
+		SELECT id, name, email, password_hashed
 		FROM users 
 		WHERE email = $1 AND time_deleted IS NULL
 	`
