@@ -19,6 +19,28 @@ export const API = {
     searchMovies: async (q, order, genre) => {
         return await API.fetch(`movies/search`, { q, order, genre });
     },
+    register: async (name, email, password) => {
+        return await API.send("account/register", { name, email, password });
+    },
+    login: async (email, password) => {
+        return await API.send("account/authenticate", { email, password });
+    },
+    send: async (ServiceName, data) => {
+        try {
+            const response = await fetch(API.baseURL + serviceName, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    },
     fetch: async (ServiceName, args) => {
         try {
             // Filter out undefined, null, and empty string values

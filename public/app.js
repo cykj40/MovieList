@@ -11,7 +11,7 @@ import { Router } from "./services/Router.js";
 window.app = {
     Router,
     API,
-    showError: (message = "There was an error.", goToHome = true) => {
+    showError: (message = "There was an error.", goToHome = false) => {
         document.getElementById("alert-modal").showModal();
         document.querySelector("#alert-modal p").textContent = message;
         if (goToHome) app.Router.go("/");
@@ -35,6 +35,54 @@ window.app = {
         const q = urlParams.get("q");
         const order = urlParams.get("order") ?? "";
         app.Router.go(`/movies?q=${q}&order=${order}&genre=${genre}`);
+    },
+    register: async (event) => {
+        event.preventDefault();
+        const name = document.getElementById("register-name").value;
+        const email = document.getElementById("register-email").value;
+        const password = document.getElementById("register-password").value;
+        const passwordConfirmation = document.getElementById("register-password-confirmation").value;
+
+        const errors = [];
+        if (name.length < 4) errors.push("Name must be at least 4 characters long");
+        if (password.length < 8) errors.push("Password must be at least 8 characters long");
+        if (email.length < 6) errors.push("Email must be at least 6 characters long");
+        if (password !== passwordConfirmation) errors.push("Passwords do not match");
+
+        if (errors.length == 0) {
+            const response = await API.register(name, email, password);
+            if (response.success) {
+                app.Router.go("/account/")
+            } else {
+                app.showError(response.message)
+            }
+
+        } else {
+            app.showError(errors.join(". "))
+        }
+
+
+
+
+    },
+    login: async (event) => {
+        event.preventDefault();
+
+        const email = document.getElementById("login-email").value;
+        const password = document.getElementById("login-password").value;
+
+        const errors = [];
+        if (email.length < 6) errors.push("Email must be at least 6 characters long");
+        if (password.length < 8) errors.push("Password must be at least 8 characters long");
+
+        if (errors.length == 0) {
+            const response = await API.login(email, password);
+            if (response.success) {
+                app.Router.go("/account/")
+            } else {
+                app.showError(response.message)
+            }
+        }
     },
     saveToCollection: (movieId, collectionType) => {
         // This would normally save to API

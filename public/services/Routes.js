@@ -158,6 +158,7 @@ const routes = [
         path: "/account/watchlist",
         component: WatchlistPage
     },
+
 ]
 
 export { routes };
