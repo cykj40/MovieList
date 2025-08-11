@@ -16,11 +16,9 @@ import (
 
 func initializeLogger() *logger.Logger {
 	logInstance, err := logger.NewLogger("movie.log")
-	logInstance.Error("Hello", nil)
 	if err != nil {
 		log.Fatalf("Error initializing logger: %v", err)
 	}
-	defer logInstance.Close()
 	return logInstance
 }
 
@@ -28,10 +26,9 @@ func main() {
 	// initialize logger
 	logInstance := initializeLogger()
 
-	// Environment variables
-	if err := godotenv.Load(); err != nil {
-		log.Fatalf("Error loading .env file: %v", err)
-	}
+	// Environment variables (optional .env)
+	// Do not fail if .env is missing; rely on environment when running in other contexts
+	_ = godotenv.Load()
 
 	// Connect to database
 
@@ -74,6 +71,15 @@ func main() {
 	http.HandleFunc("/api/account/register/", accountHandler.Register)
 	http.HandleFunc("/api/account/authenticate", accountHandler.Authenticate)
 	http.HandleFunc("/api/account/authenticate/", accountHandler.Authenticate)
+
+	http.Handle("/api/account/favorites/",
+		accountHandler.AuthMiddleware(http.HandlerFunc(accountHandler.GetFavorites)))
+
+	http.Handle("/api/account/watchlist/",
+		accountHandler.AuthMiddleware(http.HandlerFunc(accountHandler.GetWatchlist)))
+
+	http.Handle("/api/account/save-to-collection/",
+		accountHandler.AuthMiddleware(http.HandlerFunc(accountHandler.SaveToCollection)))
 
 	cathAllClientRoutesHandler := func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, "./public/index.html")

@@ -74,6 +74,13 @@ export const Router = {
             }
         }
 
+        if (pageElement) {
+            if (pageElement.loggedIn && app.Store.loggedIn === false) {
+                app.Router.go("/account/login");
+                return;
+            }
+        }
+
         if (pageElement == null) {
             console.log("No route match found, showing 404");
             pageElement = document.createElement("h1")

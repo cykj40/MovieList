@@ -25,9 +25,9 @@ export const API = {
     login: async (email, password) => {
         return await API.send("account/authenticate", { email, password });
     },
-    send: async (ServiceName, data) => {
+    send: async (serviceName, data) => {
         try {
-            const response = await fetch(API.baseURL + serviceName, {
+            const response = await fetch(API.baseUrl + serviceName, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -41,7 +41,7 @@ export const API = {
             throw error;
         }
     },
-    fetch: async (ServiceName, args) => {
+    fetch: async (serviceName, args) => {
         try {
             // Filter out undefined, null, and empty string values
             const cleanArgs = {};
@@ -54,7 +54,7 @@ export const API = {
                 });
             }
             const queryString = Object.keys(cleanArgs).length > 0 ? new URLSearchParams(cleanArgs).toString() : "";
-            const response = await fetch(API.baseUrl + ServiceName + "?" + queryString);
+            const response = await fetch(API.baseUrl + serviceName + "?" + queryString);
 
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);

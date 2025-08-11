@@ -6,11 +6,13 @@ import MoviesPage from "./components/MoviesPage.js";
 import { YouTubeEmbed } from "./components/YouTubeEmbed.js";
 import { RegisterPage } from "./components/RegisterPage.js";
 import { Router } from "./services/Router.js";
+import Store from "./services/Store.js";
 
 // Define window.app first
 window.app = {
     Router,
     API,
+    Store,
     showError: (message = "There was an error.", goToHome = false) => {
         document.getElementById("alert-modal").showModal();
         document.querySelector("#alert-modal p").textContent = message;
@@ -52,6 +54,7 @@ window.app = {
         if (errors.length == 0) {
             const response = await API.register(name, email, password);
             if (response.success) {
+                app.Store.jwt = response.jwt;
                 app.Router.go("/account/")
             } else {
                 app.showError(response.message)
@@ -78,12 +81,18 @@ window.app = {
         if (errors.length == 0) {
             const response = await API.login(email, password);
             if (response.success) {
+                app.Store.jwt = response.jwt;
                 app.Router.go("/account/")
             } else {
                 app.showError(response.message)
             }
         }
     },
+    logout: () => {
+        app.Store.jwt = null;
+        app.Router.go("/");
+    },
+    api: API,
     saveToCollection: (movieId, collectionType) => {
         // This would normally save to API
         console.log(`Saving movie ${movieId} to ${collectionType}`);

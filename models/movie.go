@@ -8,8 +8,8 @@ type Movie struct {
 	ReleaseYear int      `json:"release_year"`
 	Genres      []Genre  `json:"genres"`
 	Overview    *string  `json:"overview,omitempty"`
-	Score       *float32 `json:"score,omitempty"`
-	Popularity  *float32 `json:"popularity,omitempty"`
+    Score       *float64 `json:"score,omitempty"`
+    Popularity  *float64 `json:"popularity,omitempty"`
 	Keywords    []string `json:"keywords"`
 	Language    *string  `json:"language,omitempty"`
 	PosterUrl   *string  `json:"poster_url,omitempty"`

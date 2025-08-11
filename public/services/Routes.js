@@ -33,6 +33,8 @@ class LoginPage extends HTMLElement {
     }
 }
 
+customElements.define("login-page", LoginPage);
+
 class AccountPage extends HTMLElement {
     user = null;
 
@@ -60,6 +62,8 @@ class AccountPage extends HTMLElement {
         this.render();
     }
 }
+
+customElements.define("account-page", AccountPage);
 
 class FavoritesPage extends HTMLElement {
     favorites = null;
@@ -148,7 +152,8 @@ const routes = [
     },
     {
         path: "/account/",
-        component: AccountPage
+        component: AccountPage,
+        loggedIn: true
     },
     {
         path: "/account/favorites",
@@ -160,6 +165,9 @@ const routes = [
     },
 
 ]
+
+customElements.define("favorites-page", FavoritesPage);
+customElements.define("watchlist-page", WatchlistPage);
 
 export { routes };
 
