@@ -2,46 +2,31 @@ import { HomePage } from "../components/HomePage.js";
 import { MovieDetailsPage } from "../components/MovieDetailsPage.js";
 import MoviesPage from "../components/MoviesPage.js";
 import { RegisterPage } from "../components/RegisterPage.js";
-
-class LoginPage extends HTMLElement {
-    formData = null;
-
-    async render() {
-        this.innerHTML = `
-            <h1>Login</h1>
-            <form id="login-form">
-                <div>
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" required>
-                </div>
-                <div>
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" required>
-                </div>
-                <button type="submit">Login</button>
-            </form>
-        `;
-
-        this.querySelector("#login-form").addEventListener("submit", (event) => {
-            event.preventDefault();
-            // Handle login logic here
-        });
-    }
-
-    connectedCallback() {
-        this.render();
-    }
-}
-
-customElements.define("login-page", LoginPage);
+import { LoginPage } from "../components/Loginpage.js";
 
 class AccountPage extends HTMLElement {
     user = null;
 
     async render() {
         try {
-            // this.user = await API.getCurrentUser();
-            this.user = { name: "John Doe", email: "john@example.com" }; // Placeholder
+            // Check if user is actually logged in
+            if (!app.Store.jwt) {
+                this.innerHTML = '<h1>Not logged in</h1><p>Please <a href="/account/login">login</a> or <a href="/account/register">register</a></p>';
+                return;
+            }
+
+            // For now, extract user info from the JWT payload
+            // In a real app, you'd call API.getCurrentUser()
+            try {
+                const payload = JSON.parse(atob(app.Store.jwt.split('.')[1]));
+                this.user = {
+                    name: payload.name || "User",
+                    email: payload.email || "user@example.com"
+                };
+            } catch (e) {
+                // Fallback if JWT parsing fails
+                this.user = { name: "User", email: "user@example.com" };
+            }
         } catch {
             return;
         }
@@ -54,6 +39,7 @@ class AccountPage extends HTMLElement {
                 <p><strong>Email:</strong> ${this.user.email}</p>
                 <button onclick="app.Router.go('/account/favorites')">View Favorites</button>
                 <button onclick="app.Router.go('/account/watchlist')">View Watchlist</button>
+                <button onclick="app.logout()" style="background-color: #dc3545;">Logout</button>
             </div>
         `;
     }
@@ -157,11 +143,13 @@ const routes = [
     },
     {
         path: "/account/favorites",
-        component: FavoritesPage
+        component: FavoritesPage,
+        loggedIn: true
     },
     {
         path: "/account/watchlist",
-        component: WatchlistPage
+        component: WatchlistPage,
+        loggedIn: true
     },
 
 ]

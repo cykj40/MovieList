@@ -93,11 +93,31 @@ window.app = {
         app.Router.go("/");
     },
     api: API,
-    saveToCollection: (movieId, collectionType) => {
-        // This would normally save to API
-        console.log(`Saving movie ${movieId} to ${collectionType}`);
-        // For now, just show a confirmation
-        app.showError(`Movie added to ${collectionType}!`, false);
+    saveToCollection: async (movieId, collection) => {
+        if (app.Store.jwt) {
+            try {
+                const response = await API.saveToCollection(movieId, collection);
+                if (response.Success) {
+                    app.showError(`Movie added to ${collection}!`, false);
+                    switch (collection) {
+                        case "favorite":
+                            app.Router.go("/account/favorites");
+                            break;
+                        case "watchlist":
+                            app.Router.go("/account/watchlist");
+                            break;
+                    }
+                } else {
+                    app.showError("Failed to save movie to collection");
+                }
+            } catch (error) {
+                console.error(error);
+                app.showError("Error saving movie to collection");
+            }
+        } else {
+            app.showError("Please login to save movies");
+            app.Router.go("/account/login");
+        }
     }
 
 };

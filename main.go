@@ -78,7 +78,7 @@ func main() {
 	http.Handle("/api/account/watchlist/",
 		accountHandler.AuthMiddleware(http.HandlerFunc(accountHandler.GetWatchlist)))
 
-	http.Handle("/api/account/save-to-collection/",
+	http.Handle("/api/account/save-to-collection",
 		accountHandler.AuthMiddleware(http.HandlerFunc(accountHandler.SaveToCollection)))
 
 	cathAllClientRoutesHandler := func(w http.ResponseWriter, r *http.Request) {

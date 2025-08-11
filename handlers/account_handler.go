@@ -11,7 +11,7 @@ import (
 	"frontendmasters.com/reelingit/logger"
 	"frontendmasters.com/reelingit/models"
 	"frontendmasters.com/reelingit/public/token"
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 // Define request structure

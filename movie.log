@@ -275,3 +275,7 @@ ERROR: 2025/08/11 08:02:20 logger.go:35: Failed to decode registration request: 
 ERROR: 2025/08/11 08:03:14 logger.go:35: User already exists with email: test@example.com: user already exists
 ERROR: 2025/08/11 08:24:57 logger.go:35: Failed to decode registration request: EOF
 ERROR: 2025/08/11 08:25:01 logger.go:35: Failed to decode registration request: EOF
+ERROR: 2025/08/11 12:34:32 logger.go:35: User already exists with email: jankybooboo@wemail.com: user already exists
+ERROR: 2025/08/11 12:52:16 logger.go:35: Password mismatch for email: jankybooboo@wemail.com: <nil>
+ERROR: 2025/08/11 12:52:16 logger.go:35: Authentication error: authentication failed: authentication failed
+ERROR: 2025/08/11 12:52:33 logger.go:35: User already exists with email: jankybooboo@wemail.com: user already exists
