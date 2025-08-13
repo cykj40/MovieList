@@ -26,10 +26,10 @@ export const API = {
         return await API.send("account/authenticate", { email, password });
     },
     getFavorites: async () => {
-        return await API.fetch("account/favorites");
+        return await API.fetch("account/favorites/");
     },
     getWatchlist: async () => {
-        return await API.fetch("account/watchlist");
+        return await API.fetch("account/watchlist/");
     },
     saveToCollection: async (movie_id, collection) => {
         return await API.send("account/save-to-collection", { movie_id, collection });
@@ -75,10 +75,13 @@ export const API = {
                 });
             }
             const queryString = Object.keys(cleanArgs).length > 0 ? new URLSearchParams(cleanArgs).toString() : "";
+            const headers = {};
+            if (app.Store.jwt) {
+                headers["Authorization"] = `Bearer ${app.Store.jwt}`;
+            }
+
             const response = await fetch(API.baseUrl + serviceName + "?" + queryString, {
-                headers: {
-                    "Authorization": app.Store.jwt ? `Bearer ${app.Store.jwt}` : null
-                }
+                headers: headers
             });
 
             if (!response.ok) {

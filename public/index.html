@@ -140,14 +140,16 @@
         <footer>
             <p>(C) ReelingIt - FrontendMasters.com </p>
         </footer>
+    </template>
 
-        <!-- Alert Modal -->
-        <dialog id="alert-modal">
-            <div>
-                <p>Message will appear here</p>
-                <button onclick="app.closeError()">OK</button>
-            </div>
-        </dialog>
+    <!-- Alert Modal - Always available -->
+    <dialog id="alert-modal">
+        <div style="padding: 20px; text-align: center;">
+            <p style="margin-bottom: 20px; font-size: 16px;">Message will appear here</p>
+            <button onclick="app.closeError()"
+                style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">OK</button>
+        </div>
+    </dialog>
 
 </body>
 

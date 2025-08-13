@@ -56,10 +56,10 @@ class FavoritesPage extends HTMLElement {
 
     async render() {
         try {
-            // this.favorites = await API.getFavorites();
-            this.favorites = []; // Placeholder
-        } catch {
-            return;
+            this.favorites = await app.api.getFavorites();
+        } catch (error) {
+            console.error("Error fetching favorites:", error);
+            this.favorites = [];
         }
 
         this.innerHTML = `
@@ -88,10 +88,10 @@ class WatchlistPage extends HTMLElement {
 
     async render() {
         try {
-            // this.watchlist = await API.getWatchlist();
-            this.watchlist = []; // Placeholder
-        } catch {
-            return;
+            this.watchlist = await app.api.getWatchlist();
+        } catch (error) {
+            console.error("Error fetching watchlist:", error);
+            this.watchlist = [];
         }
 
         this.innerHTML = `

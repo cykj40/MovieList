@@ -14,8 +14,18 @@ window.app = {
     API,
     Store,
     showError: (message = "There was an error.", goToHome = false) => {
-        document.getElementById("alert-modal").showModal();
-        document.querySelector("#alert-modal p").textContent = message;
+        const modal = document.getElementById("alert-modal");
+        if (modal) {
+            modal.showModal();
+            const messageElement = modal.querySelector("p");
+            if (messageElement) {
+                messageElement.textContent = message;
+            }
+        } else {
+            // Fallback if modal is not ready
+            console.log("Alert:", message);
+            alert(message);
+        }
         if (goToHome) app.Router.go("/");
     },
     closeError: () => {
@@ -97,7 +107,7 @@ window.app = {
         if (app.Store.jwt) {
             try {
                 const response = await API.saveToCollection(movieId, collection);
-                if (response.Success) {
+                if (response.success) {
                     app.showError(`Movie added to ${collection}!`, false);
                     switch (collection) {
                         case "favorite":
