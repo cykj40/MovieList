@@ -34,6 +34,9 @@ export const API = {
     saveToCollection: async (movie_id, collection) => {
         return await API.send("account/save-to-collection", { movie_id, collection });
     },
+    removeFromCollection: async (movie_id, collection) => {
+        return await API.send("account/remove-from-collection", { movie_id, collection });
+    },
     send: async (serviceName, data) => {
         try {
             const headers = {

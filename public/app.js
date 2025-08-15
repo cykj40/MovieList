@@ -128,6 +128,33 @@ window.app = {
             app.showError("Please login to save movies");
             app.Router.go("/account/login");
         }
+    },
+    removeFromCollection: async (movieId, collection) => {
+        if (app.Store.jwt) {
+            try {
+                const response = await API.removeFromCollection(movieId, collection);
+                if (response.success) {
+                    app.showError(`Movie removed from ${collection}!`, false);
+                    // Refresh the current page to show updated list
+                    switch (collection) {
+                        case "favorite":
+                            app.Router.go("/account/favorites");
+                            break;
+                        case "watchlist":
+                            app.Router.go("/account/watchlist");
+                            break;
+                    }
+                } else {
+                    app.showError("Failed to remove movie from collection");
+                }
+            } catch (error) {
+                console.error(error);
+                app.showError("Error removing movie from collection");
+            }
+        } else {
+            app.showError("Please login to modify collections");
+            app.Router.go("/account/login");
+        }
     }
 
 };

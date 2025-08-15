@@ -67,9 +67,12 @@ class FavoritesPage extends HTMLElement {
             <div class="favorites-list">
                 ${this.favorites.length > 0 ?
                 this.favorites.map(movie => `
-                        <div class="movie-card" onclick="app.Router.go('/movies/${movie.id}')">
-                            <img src="${movie.poster_url || '/images/generic_actor.jpg'}" alt="${movie.title}">
-                            <h3>${movie.title}</h3>
+                        <div class="movie-card">
+                            <div onclick="app.Router.go('/movies/${movie.id}')" style="cursor: pointer;">
+                                <img src="${movie.poster_url || '/images/generic_actor.jpg'}" alt="${movie.title}">
+                                <h3>${movie.title}</h3>
+                            </div>
+                            <button class="remove-btn" onclick="event.stopPropagation(); app.removeFromCollection(${movie.id}, 'favorite')" style="background-color: #dc3545; color: white; border: none; padding: 5px 10px; margin-top: 10px; border-radius: 4px; cursor: pointer;">Remove from Favorites</button>
                         </div>
                     `).join('') :
                 '<p>No favorites yet. Add some movies to your favorites!</p>'
@@ -99,9 +102,12 @@ class WatchlistPage extends HTMLElement {
             <div class="watchlist-list">
                 ${this.watchlist.length > 0 ?
                 this.watchlist.map(movie => `
-                        <div class="movie-card" onclick="app.Router.go('/movies/${movie.id}')">
-                            <img src="${movie.poster_url || '/images/generic_actor.jpg'}" alt="${movie.title}">
-                            <h3>${movie.title}</h3>
+                        <div class="movie-card">
+                            <div onclick="app.Router.go('/movies/${movie.id}')" style="cursor: pointer;">
+                                <img src="${movie.poster_url || '/images/generic_actor.jpg'}" alt="${movie.title}">
+                                <h3>${movie.title}</h3>
+                            </div>
+                            <button class="remove-btn" onclick="event.stopPropagation(); app.removeFromCollection(${movie.id}, 'watchlist')" style="background-color: #dc3545; color: white; border: none; padding: 5px 10px; margin-top: 10px; border-radius: 4px; cursor: pointer;">Remove from Watchlist</button>
                         </div>
                     `).join('') :
                 '<p>No movies in watchlist yet. Add some movies to watch later!</p>'

@@ -3,6 +3,7 @@ package data
 import (
 	"database/sql"
 	"errors"
+	"strconv"
 	"time"
 
 	"frontendmasters.com/reelingit/logger"
@@ -264,7 +265,61 @@ func (r *AccountRepository) SaveCollection(user models.User, movieID int, collec
 		return false, err
 	}
 
-	r.logger.Info("Successfully added movie " + string(movieID) + " to " + collection + " for user")
+	r.logger.Info("Successfully added movie " + strconv.Itoa(movieID) + " to " + collection + " for user")
+	return true, nil
+}
+
+func (r *AccountRepository) RemoveFromCollection(user models.User, movieID int, collection string) (bool, error) {
+	// Validate inputs
+	if movieID <= 0 {
+		r.logger.Error("RemoveFromCollection failed: invalid movie ID", nil)
+		return false, errors.New("invalid movie ID")
+	}
+	if collection != "favorite" && collection != "watchlist" {
+		r.logger.Error("RemoveFromCollection failed: invalid collection type", nil)
+		return false, errors.New("collection must be 'favorite' or 'watchlist'")
+	}
+
+	// Get user ID from email
+	var userID int
+	err := r.db.QueryRow(`
+		SELECT id 
+		FROM users 
+		WHERE email = $1 AND time_deleted IS NULL
+	`, user.Email).Scan(&userID)
+	if err == sql.ErrNoRows {
+		r.logger.Error("User not found", nil)
+		return false, ErrUserNotFound
+	}
+	if err != nil {
+		r.logger.Error("Failed to query user ID", err)
+		return false, err
+	}
+
+	// Remove the relationship
+	query := `
+		DELETE FROM user_movies 
+		WHERE user_id = $1 AND movie_id = $2 AND relation_type = $3
+	`
+	result, err := r.db.Exec(query, userID, movieID, collection)
+	if err != nil {
+		r.logger.Error("Failed to remove movie from "+collection, err)
+		return false, err
+	}
+
+	// Check if any rows were affected (movie was actually in the collection)
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		r.logger.Error("Failed to check rows affected", err)
+		return false, err
+	}
+
+	if rowsAffected == 0 {
+		r.logger.Info("Movie was not in " + collection + " for user")
+		return false, errors.New("movie not found in " + collection)
+	}
+
+	r.logger.Info("Successfully removed movie " + strconv.Itoa(movieID) + " from " + collection + " for user")
 	return true, nil
 }
 

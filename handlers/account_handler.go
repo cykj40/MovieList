@@ -226,6 +226,41 @@ func (h *AccountHandler) SaveToCollection(w http.ResponseWriter, r *http.Request
 	}
 }
 
+func (h *AccountHandler) RemoveFromCollection(w http.ResponseWriter, r *http.Request) {
+	type CollectionRequest struct {
+		MovieID    int    `json:"movie_id"`
+		Collection string `json:"collection"`
+	}
+
+	var req CollectionRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		h.logger.Error("Failed to decode collection request", err)
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	email, ok := r.Context().Value("email").(string)
+	if !ok {
+		http.Error(w, "Unable to retrieve email", http.StatusInternalServerError)
+		return
+	}
+
+	success, err := h.storage.RemoveFromCollection(models.User{Email: email},
+		req.MovieID, req.Collection)
+	if h.handleStorageError(w, err, "Failed to remove from collection") {
+		return
+	}
+
+	response := AuthResponse{
+		Success: success,
+		Message: "Movie removed from " + req.Collection + " successfully",
+	}
+
+	if err := h.writeJSONResponse(w, response); err == nil {
+		h.logger.Info("Successfully removed movie from " + req.Collection)
+	}
+}
+
 func (h *AccountHandler) GetFavorites(w http.ResponseWriter, r *http.Request) {
 	email, ok := r.Context().Value("email").(string)
 	if !ok {

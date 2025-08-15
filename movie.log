@@ -279,3 +279,5 @@ ERROR: 2025/08/11 12:34:32 logger.go:35: User already exists with email: jankybo
 ERROR: 2025/08/11 12:52:16 logger.go:35: Password mismatch for email: jankybooboo@wemail.com: <nil>
 ERROR: 2025/08/11 12:52:16 logger.go:35: Authentication error: authentication failed: authentication failed
 ERROR: 2025/08/11 12:52:33 logger.go:35: User already exists with email: jankybooboo@wemail.com: user already exists
+ERROR: 2025/08/13 06:17:55 logger.go:35: Failed to scan movie row: sql: Scan error on column index 4, name "release_year": converting NULL to int is unsupported
+ERROR: 2025/08/13 06:17:55 logger.go:35: Failed to get movies: sql: Scan error on column index 4, name "release_year": converting NULL to int is unsupported
