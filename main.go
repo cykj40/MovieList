@@ -95,9 +95,14 @@ func main() {
 	// handler for static files (html, css, js, images)
 	http.Handle("/", http.FileServer(http.Dir("public")))
 
-	fmt.Println("Server is running on port 8080")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 
-	const addr = ":8080"
+	fmt.Printf("Server is running on port %s\n", port)
+
+	addr := ":" + port
 	err = http.ListenAndServe(addr, nil)
 	if err != nil {
 		logInstance.Error("Error starting server", err)
